@@ -26,8 +26,9 @@ jobs:
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INITIAL_VERSION: 1.2.3
           WITH_V: true
-          DEFAULT_BUMP: patch # Change to major/minor/patch based on needs
           PRERELEASE: true
-          RELEASE_BRANCHES: stage
           PRERELEASE_SUFFIX: "stage"
+          DEFAULT_BUMP: patch # Change to major/minor/patch based on needs
+          RELEASE_BRANCHES: stage
