@@ -21,4 +21,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-          DEFAULT_BUMP: major # Change to major/minor/patch based on needs
+          DEFAULT_BUMP: patch # Change to major/minor/patch based on needs
+          RELEASE_BRANCHES: main
