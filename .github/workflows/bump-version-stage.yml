@@ -1,32 +1,30 @@
-name: Bump version (stage)
-
+name: Bump version
 on:
   pull_request:
     types:
       - closed
+    branches:
+      - stage
 
 jobs:
-  bump_version:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'stage'
+  build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.merge_commit_sha }}
+        fetch-depth: '0'
 
-      - name: Get latest tag for stage
-        id: get_tag
-        run: |
-          latest_tag=$(git tag --list 'v*-stage' --sort=-v:refname | head -n 1)
-          echo "latest_tag=$latest_tag" >> $GITHUB_ENV
-
-      - name: Bump version and push tag (stage)
-        uses: anothrNick/github-tag-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: major # Change to major/minor/patch based on needs
-          RELEASE_BRANCHES: stage
-          PRERELEASE_SUFFIX: "-stage"
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+        INITIAL_VERSION: 1.2.3
+        DEFAULT_BUMP: patch
+        WITH_V: true
+        PRERELEASE: true
+        RELEASE_BRANCHES: stage
+        PRERELEASE_SUFFIX: stage
